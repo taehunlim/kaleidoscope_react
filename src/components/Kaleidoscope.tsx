@@ -1,20 +1,28 @@
 import React, {useRef, useEffect} from 'react';
 import styled from "@emotion/styled";
 
-function Kaleidoscope({img}) {
+interface KaleidoscopeProps {
+    img: string
+}
+
+type HexCallback = (hexes: HexType[]) => void;
+
+type HexType = string;
+
+function Kaleidoscope({img}: KaleidoscopeProps) {
     const ref = useRef(null);
     const imgRef = useRef(null);
 
-    function rgbToHex(r, g, b) {
+    function rgbToHex(r: number, g: number, b: number) {
         if (r > 255 || g > 255 || b > 255)
             throw "Invalid color component";
         return ((r << 16) | (g << 8) | b).toString(16);
     };
 
-    function getColorFromImg(img, hexes) {
+    function getColorFromImg(img: HTMLImageElement, hexes: HexCallback) {
         img.onload = () => {
             const canvas = document.createElement("canvas"),
-                ctx = canvas.getContext("2d");
+                ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
             canvas.width = img.width;
             canvas.height = img.height;
 
@@ -28,22 +36,22 @@ function Kaleidoscope({img}) {
                 centerPixelLength = centerPixel.length;
 
             // center hex
-            let hexArr = [];
+            let hexArr: HexType[] = [];
             for (let i = 0; i < centerPixelLength; i += 4) {
                 const r = centerPixel[i],
                     g = centerPixel[i + 1],
-                    b = centerPixel[i + 2],
-                    a = centerPixel[i + 3] / 255;
+                    b = centerPixel[i + 2];
+                    // a = centerPixel[i + 3] / 255;
 
                 const hex = "#" + ("000000" + rgbToHex(r, g, b)).slice(-6);
                 hexArr.push(hex);
-            };
+            }
 
             return hexes(hexArr);
         }
     };
 
-    function drawKaleidoscope(image, canvas, hexes) {
+    function drawKaleidoscope(image: HTMLImageElement, canvas: HTMLCanvasElement, hexes: HexType[]) {
         const canvasSize = (image.width + image.width * 0.5) * 2;
 
         canvas.width = canvasSize;
@@ -65,7 +73,7 @@ function Kaleidoscope({img}) {
         const PI2 = Math.PI * 2;
         const angle = PI2 / sides;
 
-        const ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
         ctx.translate(canvasRadius, canvasRadius);
 
         for (let i = 0; i < sides; i++) {

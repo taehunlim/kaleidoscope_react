@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Kaleidoscope from "../components/Kaleidoscope";
 import img from '../assets/images/img.jpeg';
 
