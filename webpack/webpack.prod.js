@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
+const {BUILD_PATH} = require('./commonPath');
 
 module.exports = merge(common, {
    mode: 'production',
@@ -15,6 +16,7 @@ module.exports = merge(common, {
       filename: 'js/[name].[chunkhash].bundle.js',
       chunkFilename: 'js/[name].[chunkhash].chunk.js', //dynamic import,
       publicPath: '/',
+      path: BUILD_PATH
    },
    module: {
       rules: [

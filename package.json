@@ -34,6 +34,7 @@
     "@types/jest": "^28.1.1",
     "babel-loader": "^8.2.5",
     "css-minimizer-webpack-plugin": "^4.0.0",
+    "file-loader": "^6.2.0",
     "fork-ts-checker-webpack-plugin": "^7.2.11",
     "html-webpack-plugin": "^5.5.0",
     "jest-environment-jsdom": "^28.1.1",
