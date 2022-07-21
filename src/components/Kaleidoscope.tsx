@@ -41,7 +41,7 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
                 const r = centerPixel[i],
                     g = centerPixel[i + 1],
                     b = centerPixel[i + 2];
-                    // a = centerPixel[i + 3] / 255;
+                // a = centerPixel[i + 3] / 255;
 
                 const hex = "#" + ("000000" + rgbToHex(r, g, b)).slice(-6);
                 hexArr.push(hex);
@@ -77,30 +77,30 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
         ctx.translate(canvasRadius, canvasRadius);
 
         for (let i = 0; i < sides; i++) {
-            const x = (radius) * Math.cos(angle * i);
-            const y = (radius) * Math.sin(angle * i);
+            setTimeout(() => {
+                const x = (radius) * Math.cos(angle * i);
+                const y = (radius) * Math.sin(angle * i);
 
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.rotate(((360 / sides) * i + 90) * Math.PI / 180);
-            ctx.beginPath();
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(((360 / sides) * i + 90) * Math.PI / 180);
+                ctx.beginPath();
 
-            hexes.forEach((color, index) => {
-                ctx.lineWidth = 0.5;
-                if (index + 1 >= 196) {
-                    ctx.lineWidth = 0.25;
-                }
+                hexes.forEach((color, index) => {
+                    ctx.lineWidth = 0.5;
+                    if (index + 1 >= 196) {
+                        ctx.lineWidth = 0.25;
+                    }
 
-                ctx.strokeStyle = color;
-                ctx.strokeRect((-kaleidoscopeWidth / 2), index, kaleidoscopeWidth, kaleidoscopeHeight - index);
-            });
+                    ctx.strokeStyle = color;
+                    ctx.strokeRect((-kaleidoscopeWidth / 2), index, kaleidoscopeWidth, kaleidoscopeHeight - index);
+                });
 
-            ctx.fill();
-            ctx.closePath();
-            ctx.restore();
+                ctx.fill();
+                ctx.closePath();
+                ctx.restore();
+            }, 20 * i)
         }
-
-        ctx.restore();
     };
 
     useEffect(() => {
