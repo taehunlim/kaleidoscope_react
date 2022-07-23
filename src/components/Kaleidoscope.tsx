@@ -16,7 +16,7 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
     function rgbToHex(r: number, g: number, b: number) {
         if (r > 255 || g > 255 || b > 255)
             throw "Invalid color component";
-        return ((r << 16) | (g << 8) | b).toString(16);
+        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     };
 
     function getColorFromImg(img: HTMLImageElement, hexes: HexCallback) {
@@ -30,9 +30,12 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imgData.data;
 
-            const center_start = (Math.floor(canvas.height / 2) * canvas.width - 1);
-            const center_end = center_start + canvas.width;
-            const centerPixel = data.slice(center_start * 4, center_end * 4),
+            const center_start = (Math.floor(canvas.height / 2) - 1) * canvas.width;
+            const center_end = center_start + canvas.width - 1;
+
+            const begin = center_start * 4;
+            const end = center_end * 4 + 3;
+            const centerPixel = data.slice(begin, end),
                 centerPixelLength = centerPixel.length;
 
             // center hex
@@ -41,10 +44,9 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
                 const r = centerPixel[i],
                     g = centerPixel[i + 1],
                     b = centerPixel[i + 2];
-                // a = centerPixel[i + 3] / 255;
+                    // a = centerPixel[i + 3] / 255;
 
-                const hex = "#" + ("000000" + rgbToHex(r, g, b)).slice(-6);
-                hexArr.push(hex);
+                hexArr.push(rgbToHex(r, g, b));
             }
 
             return hexes(hexArr);
@@ -68,7 +70,10 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
             kaleidoscopeWidth = kaleidoscopeHeight / 16 * 9;
 
         const sides = 32;
-        const radius = canvasSize / 2.11;
+        // const radius = canvasSize / 2.11;
+        const radius = -canvasSize / 7.11;
+        hexes.reverse();
+
 
         const PI2 = Math.PI * 2;
         const angle = PI2 / sides;
@@ -87,9 +92,9 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
                 ctx.beginPath();
 
                 hexes.forEach((color, index) => {
-                    ctx.lineWidth = 0.5;
-                    if (index + 1 >= 196) {
-                        ctx.lineWidth = 0.25;
+                    ctx.lineWidth = 0.25;
+                    if (index + 1 >= 100) {
+                        ctx.lineWidth = 0.5;
                     }
 
                     ctx.strokeStyle = color;
