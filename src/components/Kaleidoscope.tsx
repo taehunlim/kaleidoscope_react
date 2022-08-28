@@ -111,13 +111,12 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
     useEffect(() => {
         const canvas = ref.current;
         const image = imgRef.current;
-
         if (canvas && image) {
             getColorFromImg(image, hexes => {
                 drawKaleidoscope(image, canvas, hexes);
             });
         }
-    });
+    }, []);
 
     return (
         <Wrapper>
@@ -125,6 +124,7 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
                 ref={imgRef}
                 src={img}
                 width={300}
+                height={300 / 16 * 9}
             />
             <canvas ref={ref}/>
         </Wrapper>
