@@ -2,7 +2,7 @@ import React, {useRef, useEffect} from 'react';
 import styled from "@emotion/styled";
 
 interface KaleidoscopeProps {
-    img: string
+    img: string;
 }
 
 type HexCallback = (hexes: HexType[]) => void;
@@ -74,7 +74,6 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
         const radius = -canvasSize / 7.11;
         hexes.reverse();
 
-
         const PI2 = Math.PI * 2;
         const angle = PI2 / sides;
 
@@ -82,7 +81,7 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
         ctx.translate(canvasRadius, canvasRadius);
 
         for (let i = 0; i < sides; i++) {
-            setTimeout(() => {
+            const times = setTimeout(() => {
                 const x = (radius) * Math.cos(angle * i);
                 const y = (radius) * Math.sin(angle * i);
 
@@ -104,7 +103,11 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
                 ctx.fill();
                 ctx.closePath();
                 ctx.restore();
-            }, 20 * i)
+            }, 20 * i);
+            //@ts-ignore
+            document.getElementById('button').addEventListener('click', () => {
+                clearTimeout(times);
+            });
         }
     };
 
@@ -117,6 +120,7 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
             });
         }
     }, []);
+
 
     return (
         <Wrapper>

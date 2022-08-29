@@ -31,7 +31,7 @@ const Home = () => {
     return (
         <Templates>
             <ButtonContainer>
-                <button onClick={nextImage}>+</button>
+                <button id="button" onClick={nextImage}>+</button>
                 <button onClick={prevImage}>-</button>
             </ButtonContainer>
             <Kaleidoscope img={images[imageIndex]}/>
