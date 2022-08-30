@@ -81,7 +81,7 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
         ctx.translate(canvasRadius, canvasRadius);
 
         for (let i = 0; i < sides; i++) {
-            const times = setTimeout(() => {
+            const timer = setTimeout(() => {
                 const x = (radius) * Math.cos(angle * i);
                 const y = (radius) * Math.sin(angle * i);
 
@@ -104,16 +104,20 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
                 ctx.closePath();
                 ctx.restore();
             }, 20 * i);
-            //@ts-ignore
-            document.getElementById('button').addEventListener('click', () => {
-                clearTimeout(times);
-            });
+
+            if(imgRef.current) {
+                const image = imgRef.current as HTMLImageElement;
+                image.addEventListener('load', () => {
+                    clearTimeout(timer);
+                })
+            }
         }
     };
 
     useEffect(() => {
         const canvas = ref.current;
         const image = imgRef.current;
+
         if (canvas && image) {
             getColorFromImg(image, hexes => {
                 drawKaleidoscope(image, canvas, hexes);
