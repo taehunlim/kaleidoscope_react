@@ -7,15 +7,29 @@ interface Props {
 
 function Templates({children}: Props) {
     return (
-        <Wrapper>
-            {children}
-        </Wrapper>
+        <Container>
+            <Wrapper>
+                {children}
+            </Wrapper>
+        </Container>
     );
 }
 
+const Container = styled.div`
+  background-color: #1d1d1d;
+`;
+
 const Wrapper = styled.div`
+  position: relative;
+
   display: flex;
   justify-content: center;
+
+  height: 100%;
+  width: 100%;
+
+
+  margin: 0 50px;
 `;
 
 export default Templates;

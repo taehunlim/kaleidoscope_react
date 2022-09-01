@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 
 import styled from "@emotion/styled";
 
-import Kaleidoscope from "../components/Kaleidoscope";
-import Templates from "../components/templates";
+import Kaleidoscope from "components/Kaleidoscope";
+import Templates from "components/templates";
 
-import img from '../assets/images/img.jpeg';
-import half from '../assets/images/half.jpeg';
-import prague from '../assets/images/prague.jpeg';
-import swiss from '../assets/images/swiss.jpeg';
+import img from 'assets/images/img.jpeg';
+import half from 'assets/images/half.jpeg';
+import prague from 'assets/images/prague.jpeg';
+import swiss from 'assets/images/swiss.jpeg';
 
 
 const images = [
@@ -34,13 +34,30 @@ const Home = () => {
                 <button onClick={nextImage}>+</button>
                 <button onClick={prevImage}>-</button>
             </ButtonContainer>
-            <Kaleidoscope img={images[imageIndex]}/>
+            <KaleidoscopeWrapper>
+                <Kaleidoscope img={images[imageIndex]}/>
+            </KaleidoscopeWrapper>
         </Templates>
     );
 };
 
 const ButtonContainer = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  
   display: grid;
+`;
+
+const KaleidoscopeWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  
+  display: flex;
+  justify-content: center;
+  text-align: center;
 `;
 
 export default Home;

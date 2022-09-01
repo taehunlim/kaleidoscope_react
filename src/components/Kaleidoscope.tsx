@@ -141,6 +141,7 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
 
 const Wrapper = styled.div`
   position: relative;
+  align-self: center;
 `;
 
 const StyledImg = styled.img`
