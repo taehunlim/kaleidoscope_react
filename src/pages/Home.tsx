@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 
 import Kaleidoscope from "components/Kaleidoscope";
 import Templates from "components/templates";
+import Button from "components/Button";
 
 import img from 'assets/images/img.jpeg';
 import half from 'assets/images/half.jpeg';
@@ -31,8 +32,8 @@ const Home = () => {
     return (
         <Templates>
             <ButtonContainer>
-                <button onClick={nextImage}>+</button>
-                <button onClick={prevImage}>-</button>
+                <Button onClick={nextImage}>↑</Button>
+                <Button onClick={prevImage}>↓</Button>
             </ButtonContainer>
             <KaleidoscopeWrapper>
                 <Kaleidoscope img={images[imageIndex]}/>
@@ -49,6 +50,9 @@ const ButtonContainer = styled.div`
   margin: auto 0;
   
   display: grid;
+  gap: 30px;
+
+  align-content: center;
 `;
 
 const KaleidoscopeWrapper = styled.div`

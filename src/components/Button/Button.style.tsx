@@ -23,28 +23,29 @@ const styles = ({
 
    const selectedBgColor = selectedColor
       ? theme.bg[selectedColor]
-      : 'transparent';
+      : '#000000';
    const bg = disabled ? '#d2d3d5' : selectedBgColor;
 
    const selectedFontColor = selectedColor
       ? theme.fg[selectedColor]
-      : theme.fg.black;
+      : theme.fg.white;
    const fontColor = disabled ? theme.fg.white : selectedFontColor;
 
    return css`
       display: inline-flex;
       align-items: center;
       white-space: nowrap;
-      font-size: ${height && `${height / 40}rem`};
-      height: 2.5em;
+      font-size: 25px;
+      height: 50px;
+      width: 50px;
       justify-content: center;
       text-decoration: none;
       cursor: ${disabled ? 'default' : 'cursor'};
       appearance: none;
       padding: 0 1em;
       pointer-events: ${disabled ? 'none' : 'auto'};
-      border-radius: 0.25em;
-      border: 0.0625em solid ${!selectedColor ? '#d2d3d5' : 'transparent'};
+      border-radius: 25px;
+      border: 0.0625em solid transparent;
       transition: background-color 250ms ease-out, color 250ms ease-out,
          border-color 250ms ease-out;
       background-color: ${bg};
@@ -56,9 +57,9 @@ const styles = ({
          background-color: ${selectedColor
             ? theme.fg[selectedColor]
             : 'transparent'};
-         color: ${selectedColor ? theme.fg.white : theme.fg.primary};
+         color: ${selectedColor ? theme.fg.white : theme.fg.red};
          border: 0.0625em solid
-            ${selectedColor ? 'currentcolor' : theme.fg.primary};
+            ${selectedColor ? 'currentcolor' : theme.fg.red};
       }
 
       svg {
