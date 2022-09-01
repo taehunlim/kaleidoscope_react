@@ -1,36 +1,83 @@
 import '@emotion/react';
 
+interface DeviceSizeProps {
+   desktop: string;
+   laptop: string;
+   tablet: string;
+   mobile: string;
+}
+
+interface DeviceProps {
+   desktop: string;
+   laptop: string;
+   tablet: string;
+   mobile: string;
+}
+
+interface LayoutComponentProps {
+   header_height: number;
+   grid_gutter_width: number;
+   footer_height: number;
+   sideBarWidth: number;
+   sideBarWidth_collapsed: number;
+}
+
+interface BootstrapColorProps {
+   primary: string;
+   danger: string;
+   complete: string;
+   onGoing: string;
+   etc: string;
+}
+
+interface BootstrapColorProps {
+   primary: string;
+   danger: string;
+   complete: string;
+   onGoing: string;
+   etc: string;
+}
+
+type FgProps = Fg & {
+   [key in keyof Fg]: string;
+}
+
+interface Fg extends BootstrapColorProps {
+   red: string;
+   new: string;
+   black: string;
+   gray: string;
+   translucent: string;
+   active: string;
+   white: string;
+}
+
+type BgProps = Bg & {
+   [key in keyof Bg]: string;
+}
+
+interface Bg extends BootstrapColorProps {
+   white: string;
+}
+
+
 declare module '@emotion/react' {
-  export interface Theme {
-    deviceSize: {
-      desktop: string,
-      laptop: string,
-      tablet: string,
-      mobile: string
-    },
+   export interface Theme {
+      deviceSize: DeviceSizeProps,
+      device: DeviceProps,
+      layoutComponent: LayoutComponentProps
+      fg: FgProps;
+      bg: BgProps;
+   }
+}
 
-    primary: {
-      bg: string,
-      font: string,
-    },
-
-    bgColor: {
-      lightMode: string,
-      darkMode: string
-    },
-  
-    fontColor: {
-      lightMode: string,
-      darkMode: string
-    };
-    color: {
-      primary: string,
-      danger: string,
-      white: string,
-      black: string,
-      black_bold: string,
-      gray: string,
-      gray_two: string,
-    }
-  }
+// 함수로 스타일 지정을 위한 props
+export interface ThemeProps {
+   theme: {
+      deviceSize: DeviceSizeProps,
+      device: DeviceProps,
+      layoutComponent: LayoutComponentProps
+      fg: FgProps;
+      bg: BgProps;
+   };
 }
