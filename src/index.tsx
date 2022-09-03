@@ -4,8 +4,8 @@ import {BrowserRouter} from 'react-router-dom';
 import App from './App';
 
 import {ThemeProvider} from '@emotion/react';
-import GlobalStyles from "./assets/styles/GlobalStyles";
-import theme from "./assets/styles/theme";
+import GlobalStyles from "../public/assets/styles/GlobalStyles";
+import theme from "../public/assets/styles/theme";
 
 
 const container = document.getElementById('root');

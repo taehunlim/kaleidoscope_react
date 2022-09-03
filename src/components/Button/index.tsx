@@ -1,5 +1,5 @@
 import React from 'react';
-import { BootstrapColorProps } from 'assets/styles/emotion';
+import { BootstrapColorProps } from '../../../public/assets/styles/emotion';
 
 import styledComponent from './Button.style';
 

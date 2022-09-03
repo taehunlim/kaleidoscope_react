@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { ThemeProps, BootstrapColorProps } from 'assets/styles/emotion';
+import { ThemeProps, BootstrapColorProps } from '../../../public/assets/styles/emotion';
 
 interface StyleProps extends React.ComponentProps<'button'> {
    height?: number;
