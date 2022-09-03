@@ -37,7 +37,7 @@ function KaleidoscopeSlide({images}: Props) {
 
 const ButtonContainer = styled.div`
   position: absolute;
-  left: 0;
+  left: 30px;
   top: 0;
   bottom: 0;
   margin: auto 0;

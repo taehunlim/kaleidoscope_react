@@ -10,6 +10,15 @@ type HexCallback = (hexes: HexType[]) => void;
 
 type HexType = string;
 
+const vh = window.innerHeight;
+const vw = window.innerWidth;
+
+const min = Math.min(...[vh, vw]);
+
+const imageSize = (min - 30*4 - 50)/3;
+const imageWidth = imageSize > 300 ? 300 : imageSize;
+const imageHeight = imageWidth / 16 * 9;
+
 function Kaleidoscope({img, blur = 1}: KaleidoscopeProps) {
     const ref = useRef(null);
     const imgRef = useRef(null);
@@ -132,8 +141,8 @@ function Kaleidoscope({img, blur = 1}: KaleidoscopeProps) {
             <StyledImg
                 ref={imgRef}
                 src={img}
-                width={300}
-                height={300 / 16 * 9}
+                width={imageWidth}
+                height={imageHeight}
             />
             <canvas ref={ref}/>
         </Wrapper>

@@ -27,9 +27,7 @@ const Wrapper = styled.div`
 
   height: 100%;
   width: 100%;
-
-
-  margin: 0 50px;
+  
 `;
 
 export default Templates;
