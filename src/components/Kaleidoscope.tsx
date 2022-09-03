@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 
 interface KaleidoscopeProps {
     img: string;
+    size?: number;
     blur?: number;
 }
 
@@ -10,16 +11,17 @@ type HexCallback = (hexes: HexType[]) => void;
 
 type HexType = string;
 
-const vh = window.innerHeight;
-const vw = window.innerWidth;
+function Kaleidoscope({img, size, blur = 1}: KaleidoscopeProps) {
+    const vh = window.innerHeight;
+    const vw = window.innerWidth;
 
-const min = Math.min(...[vh, vw]);
+    const min = Math.min(...[vh, vw]);
 
-const imageSize = (min - 30*4 - 50)/3;
-const imageWidth = imageSize > 300 ? 300 : imageSize;
-const imageHeight = imageWidth / 16 * 9;
+    const imageSize = (min - 30*4 - 50)/3;
+    const defaultImageWidth = imageSize > 300 ? 300 : imageSize;
+    const imageWidth = size || defaultImageWidth;
+    const imageHeight = imageWidth / 16 * 9;
 
-function Kaleidoscope({img, blur = 1}: KaleidoscopeProps) {
     const ref = useRef(null);
     const imgRef = useRef(null);
 
