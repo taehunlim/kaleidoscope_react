@@ -7,6 +7,7 @@
 ## 고려 사항
 - [x] canvas에 transition을 넣어서 그려지는 느낌주기
 - [x] Image 슬라이드로 교체 하기
+- [x] 반응형은 고려하지 않음. 대신, 처음 이미지 로드시 viewSize를 가져와서 사이즈를 조절
 
 ## 문제
 - [x] transition 효과 => setTimeout을 사용
