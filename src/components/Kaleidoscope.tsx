@@ -3,13 +3,14 @@ import styled from "@emotion/styled";
 
 interface KaleidoscopeProps {
     img: string;
+    blur?: number;
 }
 
 type HexCallback = (hexes: HexType[]) => void;
 
 type HexType = string;
 
-function Kaleidoscope({img}: KaleidoscopeProps) {
+function Kaleidoscope({img, blur = 1}: KaleidoscopeProps) {
     const ref = useRef(null);
     const imgRef = useRef(null);
 
@@ -58,7 +59,7 @@ function Kaleidoscope({img}: KaleidoscopeProps) {
 
         canvas.width = canvasSize;
         canvas.height = canvasSize;
-        canvas.style.filter = "blur(1px)";
+        canvas.style.filter = `blur(${blur}px)`;
         image.style.marginLeft = `${image.width / 12.8}px`;
 
         // const dpr = window.devicePixelRatio;

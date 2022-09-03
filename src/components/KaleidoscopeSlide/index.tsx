@@ -29,7 +29,7 @@ function KaleidoscopeSlide({images}: Props) {
                 <Button onClick={prevImage}>↓</Button>
             </ButtonContainer>
             <KaleidoscopeWrapper>
-                <Kaleidoscope img={images[imageIndex]}/>
+                <Kaleidoscope blur={2} img={images[imageIndex]}/>
             </KaleidoscopeWrapper>
         </div>
     );
