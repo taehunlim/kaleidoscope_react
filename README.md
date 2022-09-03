@@ -5,7 +5,6 @@
 3. canvas에 그려진 사격형 rotate로 돌려서 원하는 effect를 만듬
 
 ## 고려 사항
-
 - [x] canvas에 transition을 넣어서 그려지는 느낌주기
 - [x] Image 슬라이드로 교체 하기
 
