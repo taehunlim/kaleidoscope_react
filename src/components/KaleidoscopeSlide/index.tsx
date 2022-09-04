@@ -23,7 +23,7 @@ function KaleidoscopeSlide({images}: Props) {
     }
 
     return (
-        <div>
+        <Container>
             <ButtonContainer>
                 <Button onClick={nextImage}>↑</Button>
                 <Button onClick={prevImage}>↓</Button>
@@ -31,26 +31,28 @@ function KaleidoscopeSlide({images}: Props) {
             <KaleidoscopeWrapper>
                 <Kaleidoscope blur={2} img={images[imageIndex]}/>
             </KaleidoscopeWrapper>
-        </div>
+        </Container>
     );
 }
 
-const ButtonContainer = styled.div`
-  position: absolute;
-  left: 30px;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
+const Container = styled.div`
+  align-self: center;
+`;
 
+const ButtonContainer = styled.div`
   display: grid;
   gap: 30px;
-
-  align-content: center;
 `;
 
 const KaleidoscopeWrapper = styled.div`
   width: 100%;
   height: 100%;
+  position: absolute;
+  
+  top: 0;
+  left: 0;
+  
+  margin: auto;
 
   display: flex;
   justify-content: center;

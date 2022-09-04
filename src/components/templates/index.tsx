@@ -17,17 +17,17 @@ function Templates({children}: Props) {
 
 const Container = styled.div`
   background-color: #1d1d1d;
+  height: 100%;
+  width: 100%;
+  padding: 30px;
 `;
 
 const Wrapper = styled.div`
   position: relative;
-
   display: flex;
-  justify-content: center;
 
   height: 100%;
   width: 100%;
-  
 `;
 
 export default Templates;
