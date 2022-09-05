@@ -1,13 +1,42 @@
-import React, {ReactNode} from 'react';
+import React, {useRef, ReactNode} from 'react';
 import styled from '@emotion/styled';
 
+import Button from "../Button";
+
 interface Props {
-    children: ReactNode
+    children: ReactNode;
 }
 
 function Templates({children}: Props) {
+    const ref = useRef(null);
+    const anchorRef = useRef(null);
+
+    function handleUpload() {
+        if(ref.current) {
+            const input = ref.current as HTMLInputElement;
+            input.click();
+        }
+    }
+
+    function handleImage(files: FileList) {
+        const filename = files[0].name;
+        const blob = new Blob([files[0]]);
+        const url = URL.createObjectURL(blob);
+
+        if(anchorRef.current) {
+            const anchor = anchorRef.current as HTMLAnchorElement;
+
+            anchor.href = url;
+            anchor.download = filename;
+            anchor.click();
+        }
+    }
+
     return (
         <Container>
+            <Button onClick={handleUpload}>⇪</Button>
+            <Input ref={ref} type="file" onChange={({target}) => handleImage(target.files!)}/>
+            <a ref={anchorRef} download />
             <Wrapper>
                 {children}
             </Wrapper>
@@ -20,6 +49,10 @@ const Container = styled.div`
   height: 100%;
   width: 100%;
   padding: 30px;
+`;
+
+const Input = styled.input`
+  display: none;
 `;
 
 const Wrapper = styled.div`
