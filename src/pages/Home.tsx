@@ -8,7 +8,7 @@ import imagesJson from 'images.json';
 const Home = () => {
     return (
         <Templates>
-            <KaleidoscopeSlide images={imagesJson}/>
+            <KaleidoscopeSlide images={imagesJson} onChange={e => console.log(e)}/>
         </Templates>
     );
 };

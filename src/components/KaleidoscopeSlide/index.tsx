@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "@emotion/styled";
 
 import Kaleidoscope from "../Kaleidoscope";
@@ -7,10 +7,17 @@ import Button from "../Button";
 type ImageType = string;
 interface Props {
     images: ImageType[];
+    onChange?: (e: ImageType) => void;
 }
 
-function KaleidoscopeSlide({images}: Props) {
+function KaleidoscopeSlide({images, onChange}: Props) {
     const [imageIndex, setImageIndex] = useState(0);
+
+    useEffect(() => {
+        if(onChange) {
+            onChange(images[imageIndex])
+        }
+    }, [imageIndex])
 
     function nextImage() {
         if (imageIndex >= images.length - 1) return setImageIndex(0);

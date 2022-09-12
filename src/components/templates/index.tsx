@@ -1,6 +1,5 @@
-import React, {useRef, ReactNode} from 'react';
+import React, {ReactNode, useRef} from 'react';
 import styled from '@emotion/styled';
-
 import Button from "../Button";
 
 interface Props {
@@ -8,6 +7,7 @@ interface Props {
 }
 
 function Templates({children}: Props) {
+
     const ref = useRef(null);
     const anchorRef = useRef(null);
 
@@ -32,9 +32,10 @@ function Templates({children}: Props) {
         }
     }
 
+
     return (
         <Container>
-            <Button onClick={handleUpload}>⇪</Button>
+            <StyledButton onClick={handleUpload}>⇪</StyledButton>
             <Input ref={ref} type="file" onChange={({target}) => handleImage(target.files!)}/>
             <a ref={anchorRef} download />
             <Wrapper>
@@ -51,8 +52,8 @@ const Container = styled.div`
   padding: 30px;
 `;
 
-const Input = styled.input`
-  display: none;
+const StyledButton = styled(Button)`
+  position: absolute;
 `;
 
 const Wrapper = styled.div`
@@ -62,5 +63,10 @@ const Wrapper = styled.div`
   height: 100%;
   width: 100%;
 `;
+
+const Input = styled.input`
+  display: none;
+`;
+
 
 export default Templates;
