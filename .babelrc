@@ -3,5 +3,14 @@
     "@babel/preset-env",
     "@babel/preset-react",
     "@babel/preset-typescript"
+  ],
+  "plugins": [
+    [
+      "@emotion",
+      {
+        "autoLabel": "dev-only",
+        "labelFormat": "[dirname]-[filename]-[local]"
+      }
+    ]
   ]
 }
