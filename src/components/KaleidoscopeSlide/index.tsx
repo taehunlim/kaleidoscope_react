@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 
 import Kaleidoscope from "../Kaleidoscope";
@@ -6,40 +6,41 @@ import Button from "../Button";
 
 type ImageType = string;
 interface Props {
-    images: ImageType[];
-    onChange?: (e: ImageType) => void;
+  images: ImageType[];
+  onChange?: (e: ImageType) => void;
+  onDetail?: MouseEventHandler<HTMLImageElement>;
 }
 
-function KaleidoscopeSlide({images, onChange}: Props) {
-    const [imageIndex, setImageIndex] = useState(0);
+function KaleidoscopeSlide({ images, onChange, onDetail }: Props) {
+  const [imageIndex, setImageIndex] = useState(0);
 
-    useEffect(() => {
-        if(onChange) {
-            onChange(images[imageIndex])
-        }
-    }, [imageIndex])
-
-    function nextImage() {
-        if (imageIndex >= images.length - 1) return setImageIndex(0);
-        setImageIndex(imageIndex + 1);
+  useEffect(() => {
+    if (onChange) {
+      onChange(images[imageIndex]);
     }
+  }, [imageIndex]);
 
-    function prevImage() {
-        if (imageIndex <= 0) return setImageIndex(images.length - 1);
-        setImageIndex(imageIndex - 1);
-    }
+  function nextImage() {
+    if (imageIndex >= images.length - 1) return setImageIndex(0);
+    setImageIndex(imageIndex + 1);
+  }
 
-    return (
-        <Container>
-            <ButtonContainer>
-                <Button onClick={nextImage}>↑</Button>
-                <Button onClick={prevImage}>↓</Button>
-            </ButtonContainer>
-            <KaleidoscopeWrapper>
-                <Kaleidoscope blur={2} img={images[imageIndex]}/>
-            </KaleidoscopeWrapper>
-        </Container>
-    );
+  function prevImage() {
+    if (imageIndex <= 0) return setImageIndex(images.length - 1);
+    setImageIndex(imageIndex - 1);
+  }
+
+  return (
+    <Container>
+      <ButtonContainer>
+        <Button onClick={nextImage}>↑</Button>
+        <Button onClick={prevImage}>↓</Button>
+      </ButtonContainer>
+      <KaleidoscopeWrapper>
+        <Kaleidoscope blur={2} img={images[imageIndex]} onClick={onDetail} />
+      </KaleidoscopeWrapper>
+    </Container>
+  );
 }
 
 const Container = styled.div`
@@ -53,7 +54,7 @@ const ButtonContainer = styled.div`
 
 const KaleidoscopeWrapper = styled.div`
   position: absolute;
-  
+
   top: 0;
   bottom: 0;
   left: 0;

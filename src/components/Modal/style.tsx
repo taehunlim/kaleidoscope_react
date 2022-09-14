@@ -4,7 +4,7 @@ import { unfoldingStyle } from "./animations";
 
 const Content = styled.div`
   background: #fff;
-  padding: 50px;
+  // padding: 50px;
   display: inline-block;
   border-radius: 3px;
   position: relative;
