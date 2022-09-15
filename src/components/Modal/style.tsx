@@ -5,6 +5,10 @@ import { unfoldingStyle } from "./animations";
 const Content = styled.div`
   background: #fff;
   // padding: 50px;
+  width: 100%;
+  background: transparent;
+  height: 100%;
+
   display: inline-block;
   border-radius: 3px;
   position: relative;
@@ -23,6 +27,7 @@ const Content = styled.div`
 
 const CloseButton = styled.button`
   position: absolute;
+  z-index: 9;
   right: 15px;
   top: 15px;
   cursor: pointer;
