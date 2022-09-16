@@ -14,50 +14,71 @@ interface WidthProps {
 function Slider({ images, imgWidth }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
-  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
 
-  const [style, setStyle] = useState({
-    transform: `translateX(-${currentImgIndex}00%)`,
-    transition: `all 0.4s ease-in-out`,
-  });
+  const [slidePosition, setSlidePosition] = useState(
+    `translateX(-${currentSlideIndex}00%)`
+  );
+  const [slideTransition, setSlideTransition] =
+    useState(`all 0.4s ease-in-out`);
 
-  const nextSlide = () => {
+  function nextSlide() {
     const lastImgIndex = images.length - 1;
-    if (currentImgIndex === lastImgIndex) {
-      setCurrentImgIndex(0);
-      return setStyle({
-        ...style,
-        transform: `translateX(0)`,
-      });
+    if (currentSlideIndex === lastImgIndex) {
+      setCurrentSlideIndex(0);
+      return setSlidePosition(`translateX(0)`);
     }
 
-    setCurrentImgIndex(currentImgIndex + 1);
-    setStyle({
-      ...style,
-      transform: `translateX(-${currentImgIndex + 1}00%)`,
-    });
-  };
+    setCurrentSlideIndex(currentSlideIndex + 1);
+    setSlidePosition(`translateX(-${currentSlideIndex + 1}00%)`);
+  }
 
-  const prevSlide = () => {
-    if (currentImgIndex === 0) {
+  function prevSlide() {
+    if (currentSlideIndex === 0) {
       const lastImgIndex = images.length - 1;
-      setCurrentImgIndex(lastImgIndex);
-      return setStyle({
-        ...style,
-        transform: `translateX(-${lastImgIndex}00%)`,
-      });
+      setCurrentSlideIndex(lastImgIndex);
+      return setSlidePosition(`translateX(-${lastImgIndex}00%)`);
     }
 
-    setCurrentImgIndex(currentImgIndex - 1);
-    setStyle({
-      ...style,
-      transform: `translateX(-${currentImgIndex - 1}00%)`,
-    });
+    setCurrentSlideIndex(currentSlideIndex - 1);
+    setSlidePosition(`translateX(-${currentSlideIndex - 1}00%)`);
+  }
+
+  const style = {
+    transform: slidePosition,
+    transition: slideTransition,
   };
 
   return (
     <Container>
-      <ImageContainer width={imgWidth}>
+      <ImageContainer
+        width={imgWidth}
+        onTouchStart={(e) => {
+          setTouchStart(e.touches[0].pageX);
+        }}
+        onTouchMove={(e) => {
+          if (ref.current) {
+            const current = ref.current.clientWidth * currentSlideIndex;
+            const result = e.targetTouches[0].pageX - touchStart - current;
+            setSlidePosition(`translateX(${result}px)`);
+            setSlideTransition("0ms");
+          }
+        }}
+        onTouchEnd={(e) => {
+          const end = e.changedTouches[0].pageX;
+
+          if (touchStart > end) {
+            nextSlide();
+            setSlideTransition("all 0.4s ease-in-out");
+          }
+
+          if (touchStart < end) {
+            prevSlide();
+            setSlideTransition("all 0.4s ease-in-out");
+          }
+        }}
+      >
         <Wrapper ref={ref} style={style} width={imgWidth}>
           {images.map((img, index) => {
             return (
@@ -77,7 +98,6 @@ function Slider({ images, imgWidth }: Props) {
 }
 
 const widthProps = ({ width }: WidthProps) => {
-  console.log(width);
   return (width || 500) + (typeof width === "string" ? "" : "px");
 };
 
