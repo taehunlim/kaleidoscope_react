@@ -4,14 +4,14 @@ import styled from "@emotion/styled";
 
 interface Props {
   images: string[];
-  imgWidth?: string | number;
+  slideWidth?: string | number;
 }
 
 interface WidthProps {
   width?: string | number;
 }
 
-function Slider({ images, imgWidth }: Props) {
+function Slider({ images, slideWidth }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -24,8 +24,8 @@ function Slider({ images, imgWidth }: Props) {
     useState(`all 0.4s ease-in-out`);
 
   function nextSlide() {
-    const lastImgIndex = images.length - 1;
-    if (currentSlideIndex === lastImgIndex) {
+    const lastSlideIndex = images.length - 1;
+    if (currentSlideIndex === lastSlideIndex) {
       setCurrentSlideIndex(0);
       return setSlidePosition(`translateX(0)`);
     }
@@ -36,9 +36,9 @@ function Slider({ images, imgWidth }: Props) {
 
   function prevSlide() {
     if (currentSlideIndex === 0) {
-      const lastImgIndex = images.length - 1;
-      setCurrentSlideIndex(lastImgIndex);
-      return setSlidePosition(`translateX(-${lastImgIndex}00%)`);
+      const lastSlideIndex = images.length - 1;
+      setCurrentSlideIndex(lastSlideIndex);
+      return setSlidePosition(`translateX(-${lastSlideIndex}00%)`);
     }
 
     setCurrentSlideIndex(currentSlideIndex - 1);
@@ -52,8 +52,8 @@ function Slider({ images, imgWidth }: Props) {
 
   return (
     <Container>
-      <ImageContainer
-        width={imgWidth}
+      <SlideContainer
+        width={slideWidth}
         onTouchStart={(e) => {
           setTouchStart(e.touches[0].pageX);
         }}
@@ -79,16 +79,16 @@ function Slider({ images, imgWidth }: Props) {
           }
         }}
       >
-        <Wrapper ref={ref} style={style} width={imgWidth}>
+        <Wrapper ref={ref} style={style}>
           {images.map((img, index) => {
             return (
-              <div key={index}>
-                <img src={img} />
-              </div>
+              <SlideItem key={index} width={slideWidth}>
+                <img src={img} width="100%" />
+              </SlideItem>
             );
           })}
         </Wrapper>
-      </ImageContainer>
+      </SlideContainer>
       <ButtonContainer>
         <button onClick={prevSlide}>←</button>
         <button onClick={nextSlide}>→</button>
@@ -112,17 +112,22 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const ImageContainer = styled.div<WidthProps>`
+const SlideContainer = styled.div`
   overflow: hidden;
   max-width: ${widthProps};
 `;
 
-const Wrapper = styled.div<WidthProps>`
+const Wrapper = styled.div`
   display: flex;
   width: 100%;
+`;
+
+const SlideItem = styled.div`
+  display: flex;
+  min-width: ${widthProps};
+
   img {
     object-fit: contain;
-    width: ${widthProps};
     height: auto;
   }
 `;

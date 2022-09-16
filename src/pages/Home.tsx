@@ -23,7 +23,7 @@ const Home = () => {
       />
 
       <Modal show={isShow} onClose={() => setIsShow(false)}>
-        <Slider imgWidth={500} images={imagesJson} />
+        <Slider slideWidth={500} images={imagesJson} />
       </Modal>
     </Templates>
   );
