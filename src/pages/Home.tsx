@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import KaleidoscopeSlide from "../components/KaleidoscopeSlide";
 import Templates from "components/templates";
 import Modal from "components/Modal";
-import Slider from "components/Slider";
+import Slide from "components/Slide";
 
 import imagesJson from "images.json";
 
@@ -23,7 +23,7 @@ const Home = () => {
       />
 
       <Modal show={isShow} onClose={() => setIsShow(false)}>
-        <Slider slideWidth={500} images={imagesJson} />
+        <Slide images={imagesJson} />
       </Modal>
     </Templates>
   );

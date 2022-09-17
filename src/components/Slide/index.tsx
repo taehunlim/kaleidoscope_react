@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 interface Props {
   images: string[];
@@ -12,8 +13,10 @@ interface WidthProps {
 }
 
 function Slider({ images, slideWidth }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLDivElement>(null);
 
+  const [width, setWidth] = useState(slideWidth);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
 
@@ -23,6 +26,21 @@ function Slider({ images, slideWidth }: Props) {
   const [slideTransition, setSlideTransition] =
     useState(`all 0.4s ease-in-out`);
 
+  useEffect(() => {
+    if (slideWidth === "auto" || !slideWidth) {
+      const container = containerRef.current;
+      if (container) {
+        setWidth(container.clientWidth);
+
+        window.addEventListener("resize", () => {
+          console.log(container.clientWidth);
+          setWidth(container.clientWidth);
+        });
+      }
+    }
+  }, [containerRef]);
+
+  console.log(width);
   function nextSlide() {
     const lastSlideIndex = images.length - 1;
     if (currentSlideIndex === lastSlideIndex) {
@@ -51,9 +69,9 @@ function Slider({ images, slideWidth }: Props) {
   };
 
   return (
-    <Container>
+    <Container ref={containerRef} width={slideWidth}>
       <SlideContainer
-        width={slideWidth}
+        width={width}
         onTouchStart={(e) => {
           setTouchStart(e.touches[0].pageX);
         }}
@@ -82,7 +100,8 @@ function Slider({ images, slideWidth }: Props) {
         <Wrapper ref={ref} style={style}>
           {images.map((img, index) => {
             return (
-              <SlideItem key={index} width={slideWidth}>
+              <SlideItem key={index} width={width}>
+                {/* {index} */}
                 <img src={img} width="100%" />
               </SlideItem>
             );
@@ -98,10 +117,10 @@ function Slider({ images, slideWidth }: Props) {
 }
 
 const widthProps = ({ width }: WidthProps) => {
-  return (width || 500) + (typeof width === "string" ? "" : "px");
+  return (width || "auto") + (typeof width === "string" ? "" : "px");
 };
 
-const Container = styled.div`
+const Container = styled.div<WidthProps>`
   position: relative;
   height: 100%;
 
@@ -110,11 +129,19 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${({ width }) => {
+    if (!width || typeof width === "string") {
+      return css`
+        container-type: inline-size;
+      `;
+    }
+  }}
 `;
 
 const SlideContainer = styled.div`
   overflow: hidden;
-  max-width: ${widthProps};
+  width: ${widthProps};
 `;
 
 const Wrapper = styled.div`
@@ -124,7 +151,8 @@ const Wrapper = styled.div`
 
 const SlideItem = styled.div`
   display: flex;
-  min-width: ${widthProps};
+  flex-shrink: 0;
+  width: ${widthProps};
 
   img {
     object-fit: contain;
