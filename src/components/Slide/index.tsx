@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { TouchEvent, useEffect, useRef, useState } from "react";
 
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
@@ -40,7 +40,6 @@ function Slider({ images, slideWidth }: Props) {
     }
   }, [containerRef]);
 
-  console.log(width);
   function nextSlide() {
     const lastSlideIndex = images.length - 1;
     if (currentSlideIndex === lastSlideIndex) {
@@ -63,6 +62,33 @@ function Slider({ images, slideWidth }: Props) {
     setSlidePosition(`translateX(-${currentSlideIndex - 1}00%)`);
   }
 
+  function handleTouchStart(e: TouchEvent<HTMLDivElement>) {
+    setTouchStart(e.touches[0].pageX);
+  }
+
+  function handleTouchMove(e: TouchEvent<HTMLDivElement>) {
+    if (ref.current) {
+      const current = ref.current.clientWidth * currentSlideIndex;
+      const result = e.targetTouches[0].pageX - touchStart - current;
+      setSlidePosition(`translateX(${result}px)`);
+      setSlideTransition("0ms");
+    }
+  }
+
+  function handleTouchEnd(e: TouchEvent<HTMLDivElement>) {
+    const end = e.changedTouches[0].pageX;
+
+    if (touchStart > end) {
+      nextSlide();
+      setSlideTransition("all 0.4s ease-in-out");
+    }
+
+    if (touchStart < end) {
+      prevSlide();
+      setSlideTransition("all 0.4s ease-in-out");
+    }
+  }
+
   const style = {
     transform: slidePosition,
     transition: slideTransition,
@@ -72,30 +98,9 @@ function Slider({ images, slideWidth }: Props) {
     <Container ref={containerRef} width={slideWidth}>
       <SlideContainer
         width={width}
-        onTouchStart={(e) => {
-          setTouchStart(e.touches[0].pageX);
-        }}
-        onTouchMove={(e) => {
-          if (ref.current) {
-            const current = ref.current.clientWidth * currentSlideIndex;
-            const result = e.targetTouches[0].pageX - touchStart - current;
-            setSlidePosition(`translateX(${result}px)`);
-            setSlideTransition("0ms");
-          }
-        }}
-        onTouchEnd={(e) => {
-          const end = e.changedTouches[0].pageX;
-
-          if (touchStart > end) {
-            nextSlide();
-            setSlideTransition("all 0.4s ease-in-out");
-          }
-
-          if (touchStart < end) {
-            prevSlide();
-            setSlideTransition("all 0.4s ease-in-out");
-          }
-        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <Wrapper ref={ref} style={style}>
           {images.map((img, index) => {
