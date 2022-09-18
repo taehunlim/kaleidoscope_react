@@ -40,6 +40,12 @@ function Slide({ slideWidth, children }: Props) {
         window.addEventListener("resize", () => {
           setWidth(container.clientWidth);
         });
+
+        return () => {
+          window.removeEventListener("resize", () => {
+            setWidth(container.clientWidth);
+          });
+        };
       }
     }
   }, [containerRef]);
