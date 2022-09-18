@@ -40,8 +40,14 @@ function Slider({ images, slideWidth }: Props) {
     }
   }, [containerRef]);
 
+  function currentSlide() {
+    slideTransition.current = "all 0.4s ease-in-out";
+    setSlidePosition(`translateX(-${currentSlideIndex.current}00%)`);
+  }
+
   function nextSlide() {
     const lastSlideIndex = images.length - 1;
+    slideTransition.current = "all 0.4s ease-in-out";
 
     if (currentSlideIndex.current === lastSlideIndex) {
       currentSlideIndex.current = 0;
@@ -53,6 +59,8 @@ function Slider({ images, slideWidth }: Props) {
   }
 
   function prevSlide() {
+    slideTransition.current = "all 0.4s ease-in-out";
+
     if (currentSlideIndex.current === 0) {
       const lastSlideIndex = images.length - 1;
       currentSlideIndex.current = lastSlideIndex;
@@ -81,14 +89,18 @@ function Slider({ images, slideWidth }: Props) {
   function handleTouchEnd(e: TouchEvent<HTMLDivElement>) {
     const end = e.changedTouches[0].pageX;
 
-    if (touchStart.current > end) {
-      nextSlide();
-      slideTransition.current = "all 0.4s ease-in-out";
-    }
+    const { current } = wrapperRef;
+    if (current) {
+      const slideReferencePoint = current.clientWidth / 3;
+      if (touchStart.current - end > slideReferencePoint) {
+        nextSlide();
+      }
 
-    if (touchStart.current < end) {
-      prevSlide();
-      slideTransition.current = "all 0.4s ease-in-out";
+      if (end - touchStart.current > slideReferencePoint) {
+        prevSlide();
+      }
+
+      currentSlide();
     }
   }
 
