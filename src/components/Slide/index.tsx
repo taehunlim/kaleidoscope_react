@@ -1,18 +1,24 @@
-import React, { TouchEvent, useEffect, useRef, useState } from "react";
+import React, {
+  ReactNode,
+  TouchEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 interface Props {
-  images: string[];
   slideWidth?: string | number;
+  children?: ReactNode;
 }
 
 interface WidthProps {
   width?: string | number;
 }
 
-function Slider({ images, slideWidth }: Props) {
+function Slide({ slideWidth, children }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +52,7 @@ function Slider({ images, slideWidth }: Props) {
   }
 
   function nextSlide() {
-    const lastSlideIndex = images.length - 1;
+    const lastSlideIndex = React.Children.count(children) - 1;
     slideTransition.current = "all 0.4s ease-in-out";
 
     if (currentSlideIndex.current === lastSlideIndex) {
@@ -62,7 +68,7 @@ function Slider({ images, slideWidth }: Props) {
     slideTransition.current = "all 0.4s ease-in-out";
 
     if (currentSlideIndex.current === 0) {
-      const lastSlideIndex = images.length - 1;
+      const lastSlideIndex = React.Children.count(children) - 1;
       currentSlideIndex.current = lastSlideIndex;
       return setSlidePosition(`translateX(-${currentSlideIndex.current}00%)`);
     }
@@ -118,10 +124,10 @@ function Slider({ images, slideWidth }: Props) {
         onTouchEnd={handleTouchEnd}
       >
         <Wrapper ref={wrapperRef} style={style}>
-          {images.map((img, index) => {
+          {React.Children.toArray(children).map((child, index) => {
             return (
               <SlideItem key={index} width={width}>
-                <img src={img} width="100%" />
+                {child}
               </SlideItem>
             );
           })}
@@ -193,4 +199,6 @@ const ButtonContainer = styled.div`
   }
 `;
 
-export default Slider;
+Slide.Item = SlideItem;
+
+export default Slide;

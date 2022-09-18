@@ -23,7 +23,11 @@ const Home = () => {
       />
 
       <Modal show={isShow} onClose={() => setIsShow(false)}>
-        <Slide images={imagesJson} />
+        <Slide>
+          {imagesJson.map((src, index) => (
+            <img key={index} src={src} width="100%" />
+          ))}
+        </Slide>
       </Modal>
     </Templates>
   );
