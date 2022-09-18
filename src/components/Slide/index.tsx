@@ -14,17 +14,18 @@ interface WidthProps {
 
 function Slider({ images, slideWidth }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const ref = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const currentSlideIndex = useRef(0);
+  const touchStart = useRef(0);
+
+  const slideTransition = useRef("all 0.4s ease-in-out");
 
   const [width, setWidth] = useState(slideWidth);
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState(0);
 
   const [slidePosition, setSlidePosition] = useState(
     `translateX(-${currentSlideIndex}00%)`
   );
-  const [slideTransition, setSlideTransition] =
-    useState(`all 0.4s ease-in-out`);
 
   useEffect(() => {
     if (slideWidth === "auto" || !slideWidth) {
@@ -33,7 +34,6 @@ function Slider({ images, slideWidth }: Props) {
         setWidth(container.clientWidth);
 
         window.addEventListener("resize", () => {
-          console.log(container.clientWidth);
           setWidth(container.clientWidth);
         });
       }
@@ -42,56 +42,59 @@ function Slider({ images, slideWidth }: Props) {
 
   function nextSlide() {
     const lastSlideIndex = images.length - 1;
-    if (currentSlideIndex === lastSlideIndex) {
-      setCurrentSlideIndex(0);
+
+    if (currentSlideIndex.current === lastSlideIndex) {
+      currentSlideIndex.current = 0;
       return setSlidePosition(`translateX(0)`);
     }
 
-    setCurrentSlideIndex(currentSlideIndex + 1);
-    setSlidePosition(`translateX(-${currentSlideIndex + 1}00%)`);
+    currentSlideIndex.current += 1;
+    setSlidePosition(`translateX(-${currentSlideIndex.current}00%)`);
   }
 
   function prevSlide() {
-    if (currentSlideIndex === 0) {
+    if (currentSlideIndex.current === 0) {
       const lastSlideIndex = images.length - 1;
-      setCurrentSlideIndex(lastSlideIndex);
-      return setSlidePosition(`translateX(-${lastSlideIndex}00%)`);
+      currentSlideIndex.current = lastSlideIndex;
+      return setSlidePosition(`translateX(-${currentSlideIndex.current}00%)`);
     }
 
-    setCurrentSlideIndex(currentSlideIndex - 1);
-    setSlidePosition(`translateX(-${currentSlideIndex - 1}00%)`);
+    currentSlideIndex.current -= 1;
+    setSlidePosition(`translateX(-${currentSlideIndex.current}00%)`);
   }
 
   function handleTouchStart(e: TouchEvent<HTMLDivElement>) {
-    setTouchStart(e.touches[0].pageX);
+    touchStart.current = e.touches[0].pageX;
   }
 
   function handleTouchMove(e: TouchEvent<HTMLDivElement>) {
-    if (ref.current) {
-      const current = ref.current.clientWidth * currentSlideIndex;
-      const result = e.targetTouches[0].pageX - touchStart - current;
+    if (wrapperRef.current) {
+      const current =
+        wrapperRef.current.clientWidth * currentSlideIndex.current;
+      const result = e.targetTouches[0].pageX - touchStart.current - current;
       setSlidePosition(`translateX(${result}px)`);
-      setSlideTransition("0ms");
+
+      slideTransition.current = "0ms";
     }
   }
 
   function handleTouchEnd(e: TouchEvent<HTMLDivElement>) {
     const end = e.changedTouches[0].pageX;
 
-    if (touchStart > end) {
+    if (touchStart.current > end) {
       nextSlide();
-      setSlideTransition("all 0.4s ease-in-out");
+      slideTransition.current = "all 0.4s ease-in-out";
     }
 
-    if (touchStart < end) {
+    if (touchStart.current < end) {
       prevSlide();
-      setSlideTransition("all 0.4s ease-in-out");
+      slideTransition.current = "all 0.4s ease-in-out";
     }
   }
 
   const style = {
     transform: slidePosition,
-    transition: slideTransition,
+    transition: slideTransition.current,
   };
 
   return (
@@ -102,11 +105,10 @@ function Slider({ images, slideWidth }: Props) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <Wrapper ref={ref} style={style}>
+        <Wrapper ref={wrapperRef} style={style}>
           {images.map((img, index) => {
             return (
               <SlideItem key={index} width={width}>
-                {/* {index} */}
                 <img src={img} width="100%" />
               </SlideItem>
             );
