@@ -129,11 +129,7 @@ function Slide({ slideWidth, children }: Props) {
       >
         <Wrapper ref={wrapperRef} style={style}>
           {React.Children.toArray(children).map((child, index) => {
-            return (
-              <SlideItem key={index} style={{ width }}>
-                {child}
-              </SlideItem>
-            );
+            return <SlideItem key={index}>{child}</SlideItem>;
           })}
         </Wrapper>
       </SlideContainer>

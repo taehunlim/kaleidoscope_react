@@ -37,6 +37,8 @@ const SlideItem = styled.div`
   display: flex;
   flex-shrink: 0;
 
+  width: 100%;
+
   img {
     object-fit: contain;
     height: auto;
