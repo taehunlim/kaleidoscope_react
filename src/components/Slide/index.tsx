@@ -13,10 +13,12 @@ const { Container, SlideContainer, Wrapper, SlideItem, ButtonContainer } =
 
 interface Props {
   slideWidth?: string | number;
+  slidePerView?: number;
+
   children?: ReactNode;
 }
 
-function Slide({ slideWidth, children }: Props) {
+function Slide({ slideWidth, slidePerView = 1, children }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -27,9 +29,9 @@ function Slide({ slideWidth, children }: Props) {
 
   const [width, setWidth] = useState(slideWidth);
 
-  const [slidePosition, setSlidePosition] = useState(
-    `translateX(-${currentSlideIndex}00%)`
-  );
+  const itemWidth = Number(width) / Number(slidePerView);
+
+  const [slidePosition, setSlidePosition] = useState(`translateX(0)`);
 
   useEffect(() => {
     if (slideWidth === "auto" || !slideWidth) {
@@ -50,9 +52,15 @@ function Slide({ slideWidth, children }: Props) {
     }
   }, [containerRef]);
 
+  function handleSlidePosition() {
+    return setSlidePosition(
+      `translateX(-${(currentSlideIndex.current * 100) / slidePerView}%)`
+    );
+  }
+
   function currentSlide() {
     slideTransition.current = "all 0.4s ease-in-out";
-    setSlidePosition(`translateX(-${currentSlideIndex.current}00%)`);
+    handleSlidePosition();
   }
 
   function nextSlide() {
@@ -65,7 +73,7 @@ function Slide({ slideWidth, children }: Props) {
     }
 
     currentSlideIndex.current += 1;
-    setSlidePosition(`translateX(-${currentSlideIndex.current}00%)`);
+    handleSlidePosition();
   }
 
   function prevSlide() {
@@ -74,11 +82,12 @@ function Slide({ slideWidth, children }: Props) {
     if (currentSlideIndex.current === 0) {
       const lastSlideIndex = React.Children.count(children) - 1;
       currentSlideIndex.current = lastSlideIndex;
-      return setSlidePosition(`translateX(-${currentSlideIndex.current}00%)`);
+
+      return handleSlidePosition();
     }
 
     currentSlideIndex.current -= 1;
-    setSlidePosition(`translateX(-${currentSlideIndex.current}00%)`);
+    handleSlidePosition();
   }
 
   function handleTouchStart(e: TouchEvent<HTMLDivElement>) {
@@ -89,7 +98,9 @@ function Slide({ slideWidth, children }: Props) {
     if (wrapperRef.current) {
       const current =
         wrapperRef.current.clientWidth * currentSlideIndex.current;
-      const result = e.targetTouches[0].pageX - touchStart.current - current;
+
+      const result =
+        e.targetTouches[0].pageX - touchStart.current - current / slidePerView;
       setSlidePosition(`translateX(${result}px)`);
 
       slideTransition.current = "0ms";
@@ -101,16 +112,16 @@ function Slide({ slideWidth, children }: Props) {
 
     const { current } = wrapperRef;
     if (current) {
-      const slideReferencePoint = current.clientWidth / 3;
+      const slideReferencePoint = current.clientWidth / 3 / slidePerView;
       if (touchStart.current - end > slideReferencePoint) {
-        nextSlide();
+        return nextSlide();
       }
 
       if (end - touchStart.current > slideReferencePoint) {
-        prevSlide();
+        return prevSlide();
       }
 
-      currentSlide();
+      return currentSlide();
     }
   }
 
@@ -129,7 +140,15 @@ function Slide({ slideWidth, children }: Props) {
       >
         <Wrapper ref={wrapperRef} style={style}>
           {React.Children.toArray(children).map((child, index) => {
-            return <SlideItem key={index}>{child}</SlideItem>;
+            return (
+              <SlideItem
+                key={index}
+                //@ts-ignore
+                style={{ width: `${itemWidth}` }}
+              >
+                {child}
+              </SlideItem>
+            );
           })}
         </Wrapper>
       </SlideContainer>

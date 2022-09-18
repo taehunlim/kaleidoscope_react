@@ -17,13 +17,12 @@ const Home = () => {
         images={imagesJson}
         onChange={(e) => console.log(e)}
         onDetail={() => {
-          // setSelectedImage((e.target as HTMLImageElement).src);
           setIsShow(true);
         }}
       />
 
       <Modal show={isShow} onClose={() => setIsShow(false)}>
-        <Slide>
+        <Slide slidePerView={3}>
           {imagesJson.map((src, index) => (
             <img key={index} src={src} width="100%" />
           ))}
