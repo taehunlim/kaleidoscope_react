@@ -118,7 +118,7 @@ function Slide({ slideWidth, children }: Props) {
   return (
     <Container ref={containerRef} width={slideWidth}>
       <SlideContainer
-        width={width}
+        style={{ width }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -126,7 +126,7 @@ function Slide({ slideWidth, children }: Props) {
         <Wrapper ref={wrapperRef} style={style}>
           {React.Children.toArray(children).map((child, index) => {
             return (
-              <SlideItem key={index} width={width}>
+              <SlideItem key={index} style={{ width }}>
                 {child}
               </SlideItem>
             );
@@ -140,10 +140,6 @@ function Slide({ slideWidth, children }: Props) {
     </Container>
   );
 }
-
-const widthProps = ({ width }: WidthProps) => {
-  return (width || "auto") + (typeof width === "string" ? "" : "px");
-};
 
 const Container = styled.div<WidthProps>`
   position: relative;
@@ -166,7 +162,6 @@ const Container = styled.div<WidthProps>`
 
 const SlideContainer = styled.div`
   overflow: hidden;
-  width: ${widthProps};
 `;
 
 const Wrapper = styled.div`
@@ -177,7 +172,6 @@ const Wrapper = styled.div`
 const SlideItem = styled.div`
   display: flex;
   flex-shrink: 0;
-  width: ${widthProps};
 
   img {
     object-fit: contain;
@@ -198,7 +192,5 @@ const ButtonContainer = styled.div`
     color: #ffffff;
   }
 `;
-
-Slide.Item = SlideItem;
 
 export default Slide;
