@@ -136,6 +136,11 @@ function Slide({
     transition: slideTransition.current,
   };
 
+  const itemStyle = {
+    width: itemWidth,
+    margin: `0 ${slideGap / 2}`,
+  };
+
   return (
     <Container ref={containerRef} width={slideWidth}>
       <SlideContainer
@@ -147,11 +152,7 @@ function Slide({
         <Wrapper ref={wrapperRef} style={style}>
           {React.Children.toArray(children).map((child, index) => {
             return (
-              <SlideItem
-                key={index}
-                //@ts-ignore
-                style={{ width: `${itemWidth}`, margin: `0 ${slideGap / 2}` }}
-              >
+              <SlideItem key={index} style={itemStyle}>
                 {child}
               </SlideItem>
             );
