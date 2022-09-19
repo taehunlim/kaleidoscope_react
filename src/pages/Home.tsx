@@ -22,7 +22,7 @@ const Home = () => {
       />
 
       <Modal show={isShow} onClose={() => setIsShow(false)}>
-        <Slide slidePerView={3}>
+        <Slide slidePerView={3} slideGap={50}>
           {imagesJson.map((src, index) => (
             <img key={index} src={src} width="100%" />
           ))}

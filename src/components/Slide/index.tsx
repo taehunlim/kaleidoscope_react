@@ -14,11 +14,17 @@ const { Container, SlideContainer, Wrapper, SlideItem, ButtonContainer } =
 interface Props {
   slideWidth?: string | number;
   slidePerView?: number;
+  slideGap?: number;
 
   children?: ReactNode;
 }
 
-function Slide({ slideWidth, slidePerView = 1, children }: Props) {
+function Slide({
+  slideWidth,
+  slidePerView = 1,
+  slideGap = 0,
+  children,
+}: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +35,7 @@ function Slide({ slideWidth, slidePerView = 1, children }: Props) {
 
   const [width, setWidth] = useState(slideWidth);
 
-  const itemWidth = Number(width) / Number(slidePerView);
+  const itemWidth = Number(width) / slidePerView - slideGap;
 
   const [slidePosition, setSlidePosition] = useState(`translateX(0)`);
 
@@ -144,7 +150,7 @@ function Slide({ slideWidth, slidePerView = 1, children }: Props) {
               <SlideItem
                 key={index}
                 //@ts-ignore
-                style={{ width: `${itemWidth}` }}
+                style={{ width: `${itemWidth}`, margin: `0 ${slideGap / 2}` }}
               >
                 {child}
               </SlideItem>
