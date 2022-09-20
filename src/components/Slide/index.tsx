@@ -12,12 +12,13 @@ const { Container, SlideContainer, Wrapper, SlideItem, ButtonContainer } =
   styledComponent;
 
 interface Props {
+  children: ReactNode;
+
   slideWidth?: string | number;
   slidePerView?: number;
   slideGap?: number;
-
-  children: ReactNode;
   onChange?: (e: OnChangeType) => void;
+  defaultIndex?: number;
 }
 
 type OnChangeType = {
@@ -26,16 +27,17 @@ type OnChangeType = {
 };
 
 function Slide({
+  children,
   slideWidth,
   slidePerView = 1,
   slideGap = 0,
   onChange,
-  children,
+  defaultIndex = 0,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const currentSlideIndex = useRef(0);
+  const currentSlideIndex = useRef(defaultIndex);
   const touchStart = useRef(0);
 
   const slideTransition = useRef("all 0.4s ease-in-out");
@@ -64,6 +66,12 @@ function Slide({
       }
     }
   }, [containerRef]);
+
+  useEffect(() => {
+    if (defaultIndex) {
+      handleSlidePosition();
+    }
+  }, [defaultIndex]);
 
   const wrapper = wrapperRef.current;
 

@@ -21,7 +21,7 @@ const Home = () => {
       />
 
       <Modal show={isShow} onClose={() => setIsShow(false)}>
-        <Slide onChange={(e) => console.log(e)}>
+        <Slide onChange={(e) => console.log(e)} defaultIndex={2}>
           {imagesJson.map((src, index) => (
             <img key={index} src={src} width="100%" />
           ))}
