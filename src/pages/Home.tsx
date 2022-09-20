@@ -9,7 +9,6 @@ import imagesJson from "images.json";
 
 const Home = () => {
   const [isShow, setIsShow] = useState<boolean>();
-  // const [selectedImage, setSelectedImage] = useState("");
 
   return (
     <Templates>
@@ -22,7 +21,7 @@ const Home = () => {
       />
 
       <Modal show={isShow} onClose={() => setIsShow(false)}>
-        <Slide slidePerView={3} slideGap={30}>
+        <Slide onChange={(e) => console.log(e)}>
           {imagesJson.map((src, index) => (
             <img key={index} src={src} width="100%" />
           ))}

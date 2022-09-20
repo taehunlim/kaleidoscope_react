@@ -16,13 +16,20 @@ interface Props {
   slidePerView?: number;
   slideGap?: number;
 
-  children?: ReactNode;
+  children: ReactNode;
+  onChange?: (e: OnChangeType) => void;
 }
+
+type OnChangeType = {
+  element: Element;
+  slideIndex: number;
+};
 
 function Slide({
   slideWidth,
   slidePerView = 1,
   slideGap = 0,
+  onChange,
   children,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -57,6 +64,17 @@ function Slide({
       }
     }
   }, [containerRef]);
+
+  const wrapper = wrapperRef.current;
+
+  if (wrapper) {
+    if (onChange) {
+      onChange({
+        element: wrapper.children[currentSlideIndex.current],
+        slideIndex: currentSlideIndex.current,
+      });
+    }
+  }
 
   function handleSlidePosition() {
     return setSlidePosition(
@@ -137,7 +155,7 @@ function Slide({
   };
 
   const itemStyle = {
-    width: itemWidth,
+    width: !isNaN(itemWidth) ? itemWidth : "",
     margin: `0 ${slideGap / 2}`,
   };
 
