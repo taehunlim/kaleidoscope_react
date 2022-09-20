@@ -5,9 +5,13 @@ import Kaleidoscope from "../Kaleidoscope";
 import Button from "../Button";
 
 type ImageType = string;
+type OnChange = {
+  image: ImageType;
+  imageIndex: number;
+};
 interface Props {
   images: ImageType[];
-  onChange?: (e: ImageType) => void;
+  onChange?: (e: OnChange) => void;
   onDetail?: MouseEventHandler<HTMLImageElement>;
 }
 
@@ -16,7 +20,10 @@ function KaleidoscopeSlide({ images, onChange, onDetail }: Props) {
 
   useEffect(() => {
     if (onChange) {
-      onChange(images[imageIndex]);
+      onChange({
+        image: images[imageIndex],
+        imageIndex,
+      });
     }
   }, [imageIndex]);
 

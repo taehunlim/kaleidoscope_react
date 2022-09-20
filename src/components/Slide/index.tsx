@@ -69,6 +69,7 @@ function Slide({
 
   useEffect(() => {
     if (defaultIndex) {
+      currentSlideIndex.current = defaultIndex;
       handleSlidePosition();
     }
   }, [defaultIndex]);
@@ -85,6 +86,8 @@ function Slide({
   }
 
   function handleSlidePosition() {
+    console.log(defaultIndex, currentSlideIndex);
+
     return setSlidePosition(
       `translateX(-${(currentSlideIndex.current * 100) / slidePerView}%)`
     );
