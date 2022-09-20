@@ -10,11 +10,12 @@ import imagesJson from "images.json";
 const Home = () => {
   const [isShow, setIsShow] = useState<boolean>();
   const [imageIndex, setImageIndex] = useState(0);
-  console.log(imageIndex);
+
   return (
     <Templates>
       <KaleidoscopeSlide
         images={imagesJson}
+        defaultIndex={imageIndex}
         onChange={(e) => setImageIndex(e.imageIndex)}
         onDetail={() => {
           setIsShow(true);

@@ -11,12 +11,18 @@ type OnChange = {
 };
 interface Props {
   images: ImageType[];
+  defaultIndex?: number;
   onChange?: (e: OnChange) => void;
   onDetail?: MouseEventHandler<HTMLImageElement>;
 }
 
-function KaleidoscopeSlide({ images, onChange, onDetail }: Props) {
-  const [imageIndex, setImageIndex] = useState(0);
+function KaleidoscopeSlide({
+  images,
+  defaultIndex = 0,
+  onChange,
+  onDetail,
+}: Props) {
+  const [imageIndex, setImageIndex] = useState(defaultIndex);
 
   useEffect(() => {
     if (onChange) {
@@ -26,6 +32,10 @@ function KaleidoscopeSlide({ images, onChange, onDetail }: Props) {
       });
     }
   }, [imageIndex]);
+
+  useEffect(() => {
+    setImageIndex(defaultIndex);
+  }, [defaultIndex]);
 
   function nextImage() {
     if (imageIndex >= images.length - 1) return setImageIndex(0);
