@@ -1,5 +1,8 @@
 import React, { useRef, useEffect, MouseEventHandler } from "react";
-import styled from "@emotion/styled";
+
+import styledComponent from "./style";
+
+const { Wrapper, StyledImg } = styledComponent;
 
 interface KaleidoscopeProps {
   img: string;
@@ -159,24 +162,5 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
     </Wrapper>
   );
 }
-
-const Wrapper = styled.div`
-  position: relative;
-  align-self: center;
-`;
-
-const StyledImg = styled.img`
-  z-index: 1;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto 18px;
-  cursor: pointer;
-  transition: 0.3s;
-
-  :hover {
-    transform: scale(1.1);
-  }
-`;
 
 export default Kaleidoscope;
