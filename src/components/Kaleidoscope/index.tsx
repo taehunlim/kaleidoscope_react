@@ -73,7 +73,7 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
 
       function getAverageColor() {
         const colorOfWidth: ColorOfWidthProps = {};
-        let width;
+        let width = 0;
         for (let i = 0; i < data.length; i += 4) {
           const r = data[i],
             g = data[i + 1],
@@ -88,7 +88,42 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
             : [rgbToHex(r, g, b)];
         }
 
-        return colorOfWidth;
+        function getHexArray() {
+          const hexArr: HexType[] = [];
+
+          Object.values(colorOfWidth).map((colorArr) => {
+            const firsts = [];
+            const secondes = [];
+            const thirds = [];
+            const fourths = [];
+            const fifths = [];
+            const sixths = [];
+
+            for (let i = 0; i < colorArr.length; i += 1) {
+              firsts.push(colorArr[i][1]);
+              secondes.push(colorArr[i][2]);
+              thirds.push(colorArr[i][3]);
+              fourths.push(colorArr[i][4]);
+              fifths.push(colorArr[i][5]);
+              sixths.push(colorArr[i][6]);
+            }
+
+            const returnData =
+              "#" +
+              getMode(firsts) +
+              getMode(secondes) +
+              getMode(thirds) +
+              getMode(fourths) +
+              getMode(fifths) +
+              getMode(sixths);
+
+            return hexArr.push(returnData);
+          });
+
+          return hexArr;
+        }
+
+        return getHexArray();
       }
 
       function getMode(array: string[]) {
@@ -109,12 +144,7 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
         return mode;
       }
 
-      const hexArr: HexType[] = [];
-      Object.values(getAverageColor()).map((colorArr) => {
-        return hexArr.push(getMode(colorArr));
-      });
-
-      return hexes(hexArr);
+      return hexes(getAverageColor());
     };
   }
 
