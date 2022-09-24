@@ -81,7 +81,7 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
 
           const rgbIndex = i / 4;
 
-          width = rgbIndex % imageWidth;
+          width = rgbIndex % Math.floor(imageWidth);
 
           colorOfWidth[width] = colorOfWidth[width]
             ? [...colorOfWidth[width], rgbToHex(r, g, b)]
