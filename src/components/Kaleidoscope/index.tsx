@@ -15,6 +15,14 @@ type HexCallback = (hexes: HexType[]) => void;
 
 type HexType = string;
 
+interface ColorOfWidthProps {
+  [key: number]: HexType[];
+}
+
+type GetModeReduceProps = {
+  [key: string]: number;
+};
+
 function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
   const vh = window.innerHeight;
   const vw = window.innerWidth;
@@ -45,24 +53,66 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
       const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imgData.data;
 
-      const center_start = (Math.floor(canvas.height / 2) - 1) * canvas.width;
-      const center_end = center_start + canvas.width - 1;
+      // const center_start = (Math.floor(canvas.height / 2) - 1) * canvas.width;
+      // const center_end = center_start + canvas.width - 1;
 
-      const begin = center_start * 4;
-      const end = center_end * 4 + 3;
-      const centerPixel = data.slice(begin, end),
-        centerPixelLength = centerPixel.length;
+      // const begin = center_start * 4;
+      // const end = center_end * 4 + 3;
+      // const centerPixel = data.slice(begin, end),
+      // centerPixelLength = centerPixel.length;
 
-      // center hex
-      let hexArr: HexType[] = [];
-      for (let i = 0; i < centerPixelLength; i += 4) {
-        const r = centerPixel[i],
-          g = centerPixel[i + 1],
-          b = centerPixel[i + 2];
-        // a = centerPixel[i + 3] / 255;
+      // let hexArr: HexType[] = [];
+      // for (let i = 0; i < centerPixelLength; i += 4) {
+      //   const r = centerPixel[i],
+      //     g = centerPixel[i + 1],
+      //     b = centerPixel[i + 2];
+      //   // a = centerPixel[i + 3] / 255;
 
-        hexArr.push(rgbToHex(r, g, b));
+      //   hexArr.push(rgbToHex(r, g, b));
+      // }
+
+      function getAverageColor() {
+        const colorOfWidth: ColorOfWidthProps = {};
+        let width;
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i],
+            g = data[i + 1],
+            b = data[i + 2];
+
+          const rgbIndex = i / 4;
+
+          width = rgbIndex % imageWidth;
+
+          colorOfWidth[width] = colorOfWidth[width]
+            ? [...colorOfWidth[width], rgbToHex(r, g, b)]
+            : [rgbToHex(r, g, b)];
+        }
+
+        return colorOfWidth;
       }
+
+      function getMode(array: string[]) {
+        const counts = array.reduce<GetModeReduceProps>((pv, cv) => {
+          pv[cv] = (pv[cv] || 0) + 1;
+          return pv;
+        }, {});
+
+        const keys = Object.keys(counts);
+
+        let mode = keys[0];
+        keys.forEach((val) => {
+          if (counts[val] > counts[mode]) {
+            mode = val;
+          }
+        });
+
+        return mode;
+      }
+
+      const hexArr: HexType[] = [];
+      Object.values(getAverageColor()).map((colorArr) => {
+        return hexArr.push(getMode(colorArr));
+      });
 
       return hexes(hexArr);
     };
