@@ -53,13 +53,14 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
       const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imgData.data;
 
+      // //get midline color
       // const center_start = (Math.floor(canvas.height / 2) - 1) * canvas.width;
       // const center_end = center_start + canvas.width - 1;
 
       // const begin = center_start * 4;
       // const end = center_end * 4 + 3;
       // const centerPixel = data.slice(begin, end),
-      // centerPixelLength = centerPixel.length;
+      //   centerPixelLength = centerPixel.length;
 
       // let hexArr: HexType[] = [];
       // for (let i = 0; i < centerPixelLength; i += 4) {
@@ -81,7 +82,7 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
 
           const rgbIndex = i / 4;
 
-          width = rgbIndex % Math.floor(imageWidth);
+          width = rgbIndex % img.width;
 
           colorOfWidth[width] = colorOfWidth[width]
             ? [...colorOfWidth[width], rgbToHex(r, g, b)]
@@ -108,7 +109,7 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
               sixths.push(colorArr[i][6]);
             }
 
-            const returnData =
+            const colorCode =
               "#" +
               getMode(firsts) +
               getMode(secondes) +
@@ -117,7 +118,7 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
               getMode(fifths) +
               getMode(sixths);
 
-            return hexArr.push(returnData);
+            return hexArr.push(colorCode);
           });
 
           return hexArr;
@@ -144,7 +145,9 @@ function Kaleidoscope({ img, size, blur = 1, onClick }: KaleidoscopeProps) {
         return mode;
       }
 
-      return hexes(getAverageColor());
+      const hexArr = getAverageColor();
+
+      return hexes(hexArr);
     };
   }
 
