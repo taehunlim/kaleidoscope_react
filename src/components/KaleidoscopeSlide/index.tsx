@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState, useRef } from "react";
 import styled from "@emotion/styled";
 
 import Kaleidoscope from "../Kaleidoscope";
@@ -22,7 +22,9 @@ function KaleidoscopeSlide({
   onChange,
   onDetail,
 }: Props) {
+  const timerRef = useRef<any>(null);
   const [imageIndex, setImageIndex] = useState(defaultIndex);
+  const [isAutoPlay, setIsAutoPlay] = useState(false);
 
   useEffect(() => {
     if (onChange) {
@@ -32,6 +34,16 @@ function KaleidoscopeSlide({
       });
     }
   }, [imageIndex]);
+
+  useEffect(() => {
+    if (isAutoPlay) {
+      timerRef.current = setTimeout(() => {
+        return nextImage();
+      }, 2000);
+    } else {
+      return clearTimeout(timerRef.current);
+    }
+  }, [isAutoPlay, imageIndex]);
 
   useEffect(() => {
     setImageIndex(defaultIndex);
@@ -47,10 +59,14 @@ function KaleidoscopeSlide({
     setImageIndex(imageIndex - 1);
   }
 
+  function handleAutoPlay() {
+    setIsAutoPlay(!isAutoPlay);
+  }
   return (
     <Container>
       <ButtonContainer>
         <Button onClick={nextImage}>↑</Button>
+        <Button onClick={handleAutoPlay}>{isAutoPlay ? "| |" : "►"}</Button>
         <Button onClick={prevImage}>↓</Button>
       </ButtonContainer>
       <KaleidoscopeWrapper>
